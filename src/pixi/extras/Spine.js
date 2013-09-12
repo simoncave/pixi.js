@@ -79,7 +79,7 @@ PIXI.Spine.prototype.updateTransform = function () {
 		}
 
 		if (attachment.rendererObject) {
-			if (!slot.currentSpriteName || slot.currentSpriteName != attachment.name) {
+			if (!slot.currentSpriteName || (slot.currentSpriteName != attachment.rendererObject.name)) {
 				var spriteName = attachment.rendererObject.name;
 				if (slot.currentSprite !== undefined) {
 					slot.currentSprite.visible = false;
