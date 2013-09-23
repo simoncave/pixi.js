@@ -4,7 +4,7 @@
  * Copyright (c) 2012, Mat Groves
  * http://goodboydigital.com/
  *
- * Compiled: 2013-09-12
+ * Compiled: 2013-09-16
  *
  * Pixi.JS is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license.php
@@ -7735,10 +7735,11 @@ spine.Skin.prototype = {
 	}
 };
 
-spine.Animation = function (name, timelines, duration) {
+spine.Animation = function (name, timelines, duration, events) {
 	this.name = name;
 	this.timelines = timelines;
 	this.duration = duration;
+	this.events = events;
 };
 spine.Animation.prototype = {
 	apply: function (skeleton, time, loop) {
@@ -8665,7 +8666,17 @@ spine.SkeletonJson.prototype = {
 					throw "Invalid timeline type for a slot: " + timelineName + " (" + slotName + ")";
 			}
 		}
-		skeletonData.animations.push(new spine.Animation(name, timelines, duration));
+		var events = [];
+		var eventsJson = map["events"];
+		if (eventsJson) {
+			for (var i = 0; i < eventsJson.length; i++) {
+				events.push({
+					name: eventsJson[i]["name"],
+					time: eventsJson[i]["time"]
+				});
+			}
+		}
+		skeletonData.animations.push(new spine.Animation(name, timelines, duration, events));
 	}
 };
 spine.SkeletonJson.readCurve = function (timeline, frameIndex, valueMap) {
